@@ -1,0 +1,22 @@
+{
+  "name": "centimani",
+  "version": "1.0.0",
+  "description": "Quickly development cli for website",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/FelixLinBH/Centimani.git"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "author": "Felix.Lin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/FelixLinBH/Centimani/issues"
+  },
+  "homepage": "https://github.com/FelixLinBH/Centimani#readme"
+}
