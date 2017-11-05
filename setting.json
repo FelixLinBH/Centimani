@@ -1,0 +1,30 @@
+//centimani generate controller test
+//centimani generate class test
+{
+
+  "controller":{
+    "php":{
+      "templates":"",
+      "path":"",
+    },
+    "js":{
+      "templates":"",
+      "path":"",
+    },
+    "css":{
+      "templates":"",
+      "path":"",
+    },
+    "scss":{
+      "templates":"",
+      "path":"",
+    }
+  },
+  "class":{
+    "php":{
+      "templates":"",
+      "path":"",
+    },
+  }
+  
+}
