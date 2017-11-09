@@ -33,14 +33,10 @@ program
 			  Mustache.parse(data);   // optional, speeds up future uses 
 			  var rendered = Mustache.render(data, {class_name: name});
 
-        checkPathIsExist(distPath);
+		        checkPathIsExist(distPath).then(function(){
+		        	writePromise(distPath + name + "." + el,rendered);
+		        }).catch((err) => {console.log(err.message)})
 
-
-		  	  //write
-          fs.writeFile(distPath + name + "." + el, rendered, function (err) {
-              if (err) throw err;
-              console.log("The file " + distPath + name + " was saved!");
-			     }); 
 		  });
     });
 
@@ -49,28 +45,87 @@ program
 
 program.parse(process.argv);
 
-
-function checkPathIsExist(path) {
+function parsePath(path){
   var pathArray = [];
   var temp = path.split("/");
   for (var i =  0 ; i < temp.length - 1; i++) {
-    pathArray[i] = (i == 0)?temp[i] : pathArray[i-1] +  "/" +temp[i];
-    
+    pathArray[i] = (i == 0)?temp[i] : pathArray[i-1] +  "/" +temp[i]; 
   }
-  pathArray.map(function (el,index) {
-    if (index > 0) {
-      createFolder(el);
-    }
-  });
+  
+  return pathArray;
 }
 
-function createFolder(path) {
-  fs.exists(path, function (exists) {
-      console.log("path=> " + path);
-      if (!exists) {
-        fs.mkdir(path,0777, function (err) {
-          if (err) throw err;
-        });
-      }
-    });
+function checkPathIsExist(path) {
+  
+	var promiseArray = parsePath(path).map(function (el,index) {
+		if (index > 0) {
+		  return createFolder(el);
+		}
+	}).filter(function(elem, index, array){
+		return (elem != undefined)
+	})
+	
+	return new Promise(function(resolve, reject) {
+		Promise.all(promiseArray).then(function(value) {
+			resolve();
+		}).catch(function(err) {
+			reject(err);
+		})
+	});
+	
 }
+
+function forEachPromise(items) {
+    return items.reduce(function (promise, item) {
+        return promise.then(function () {
+            return fn(item);
+        });
+    }, Promise.resolve());
+}
+
+
+function createFolder(path) {
+	return new Promise(function(resolve, reject) {
+		isExistsPromise(path).then(function(value) {
+		  mkDirPromise(path).then(function(){
+		  	 resolve();
+		  },function(reason){
+		  	reject(new Error('Create '+path+' is failed.'))		  	 
+		  });
+		}, function(reason) {
+		  //File is exists.
+		  resolve();
+		})
+	});
+}
+
+function isExistsPromise(path){
+	return new Promise(function(resolve, reject) {
+		fs.exists(path, function (exists) {
+			if (!exists) resolve();
+			reject(new Error('File is exists.'))
+		});
+	});
+}
+
+function mkDirPromise(path){
+	return new Promise(function(resolve, reject) {
+	 fs.mkdir(path,0777, function (err) {
+          if (err && err.code != 'EEXIST') {
+          	console.log(err);
+          	reject(err);
+          }
+          resolve();
+        });
+	});
+}
+
+function writePromise(path,data){
+	return new Promise(function(resolve, reject) {
+		fs.writeFile(path, data, function (err) {
+          if (err) reject(err);
+          resolve();
+		});
+	});
+}
+
