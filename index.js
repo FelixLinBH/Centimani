@@ -33,33 +33,44 @@ program
 			  Mustache.parse(data);   // optional, speeds up future uses 
 			  var rendered = Mustache.render(data, {class_name: name});
 
-			  console.log(rendered);
-		  	  //write
-		  	  fs.writeFile(distPath + name, rendered, function(err) {
-			    if(err) {
-			        return console.log(err);
-			    }
+        checkPathIsExist(distPath);
 
-			   console.log("The file " + distPath + name + " was saved!");
-			}); 
-		});
+
+		  	  //write
+          fs.writeFile(distPath + name + "." + el, rendered, function (err) {
+              if (err) throw err;
+              console.log("The file " + distPath + name + " was saved!");
+			     }); 
+		  });
     });
 
  
   });
+
 program.parse(process.argv);
 
 
-// program
-//   .version('0.0.1')
-//   .option('-p, --peppers', 'Add peppers')
-//   .option('-P, --pineapple', 'Add pineapple')
-//   .option('-b, --bbq-sauce', 'Add bbq sauce')
-//   .option('-c, --cheese [type]', 'Add the specified type of cheese [marble]', 'marble')
-//   .parse(process.argv);
+function checkPathIsExist(path) {
+  var pathArray = [];
+  var temp = path.split("/");
+  for (var i =  0 ; i < temp.length - 1; i++) {
+    pathArray[i] = (i == 0)?temp[i] : pathArray[i-1] +  "/" +temp[i];
+    
+  }
+  pathArray.map(function (el,index) {
+    if (index > 0) {
+      createFolder(el);
+    }
+  });
+}
 
-// console.log('you ordered a pizza with:');
-// if (program.peppers) console.log('  - peppers');
-// if (program.pineapple) console.log('  - pineapple');
-// if (program.bbqSauce) console.log('  - bbq');
-// console.log('  - %s cheese', program.cheese);
+function createFolder(path) {
+  fs.exists(path, function (exists) {
+      console.log("path=> " + path);
+      if (!exists) {
+        fs.mkdir(path,0777, function (err) {
+          if (err) throw err;
+        });
+      }
+    });
+}
