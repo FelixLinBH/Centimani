@@ -64,7 +64,7 @@ function checkPathIsExist(path) {
 	}).filter(function(elem, index, array){
 		return (elem != undefined)
 	})
-	
+
 	return new Promise(function(resolve, reject) {
 		Promise.all(promiseArray).then(function(value) {
 			resolve();
@@ -73,14 +73,6 @@ function checkPathIsExist(path) {
 		})
 	});
 	
-}
-
-function forEachPromise(items) {
-    return items.reduce(function (promise, item) {
-        return promise.then(function () {
-            return fn(item);
-        });
-    }, Promise.resolve());
 }
 
 
