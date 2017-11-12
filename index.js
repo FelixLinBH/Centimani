@@ -7,9 +7,16 @@ var key = Object.keys(setting).map(function(el){
 	return el;
 })
 
-console.log(key);
+// console.log(key);
 
 var program = require('commander');
+program
+  .command('init [target] [type]')
+  .description('init new command')
+  .action(function (target,type,options) {
+    console.log(target);
+  });
+
 
 program
   .command('new [target] [name]')
