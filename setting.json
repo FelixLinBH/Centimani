@@ -2,7 +2,15 @@
   "controller":{
     "php":{
       "templates":"./templ/templ.php",
-      "distPath":"./dist/php/"
+      "distPath":"./dist/php/",
+      "injectionFile":[
+        {
+          "templates":"./templ/templInjection.php",
+          "distPath":"./dist/injection/controller.php",
+        },{
+          "templates":"./templ/templInjection2.php",
+          "distPath":"./dist/injection/controller2.php",
+        }]
     },
     "js":{
       "templates":"./templ/templ.js",
