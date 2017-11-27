@@ -46,6 +46,11 @@ program
             }).catch((err) => {console.log(err.message)})
 
 		  });
+      if (setting[target][el]['injectionFile'] != undefined) {
+        console.log("found injectionFile setting!");
+      }
+
+
     });
 
   
