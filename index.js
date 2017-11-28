@@ -48,6 +48,7 @@ program
 		  });
       if (setting[target][el]['injectionFile'] != undefined) {
         console.log("found injectionFile setting!");
+        
       }
 
 
@@ -58,7 +59,7 @@ program
 
 program.parse(process.argv);
 
-function writePromise(path,data){
+const writePromise = function (path,data){
 	return new Promise(function(resolve, reject) {
 		fs.writeFile(path, data, function (err) {
           if (err) reject(err);
@@ -73,6 +74,15 @@ const mkdirpASync = function (dirPath) {
       if (err) return creject(err)
       resolve();
     })
-  });
-  
+  }); 
 }
+
+const appendFilePromise = function (path,data){
+  return new Promise(function(resolve, reject) {
+    fs.appendFile(path, data, function (err) {
+          if (err) reject(err);
+          resolve();
+    });
+  });
+}
+
