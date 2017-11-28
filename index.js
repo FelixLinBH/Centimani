@@ -6,6 +6,7 @@ var Mustache = require('Mustache');
 var key = Object.keys(setting).map(function(el){
 	return el;
 })
+
 const writePromise = function (path,data){
   return new Promise(function(resolve, reject) {
     fs.writeFile(path, data, function (err) {
@@ -51,6 +52,30 @@ const parseDataPromise = function (data,name) {
   });
 }
 
+function* newAction(tmplPath,name,distPath,el) {
+  try {
+    var val1 = yield readFilePromise(tmplPath);
+    var val2 = yield parseDataPromise(val1,name);
+    var val3 = yield mkdirpASync(distPath);
+    var val4 = yield writePromise(distPath + name + "." + el,val2);
+  }
+  catch (err) {
+    console.error( err );
+  }
+}
+
+function run(tmplPath,name,distPath,el) {
+    var gen = newAction(tmplPath,name,distPath,el);
+    
+    function go(result){
+        if(result.done) return;
+        result.value.then(function(r){
+            go(gen.next(r));
+        });
+    }
+
+    go(gen.next());
+}
 
 var program = require('commander');
 program
@@ -76,14 +101,18 @@ program
 
     	var tmplPath = setting[target][el]['templates'];
     	var distPath = setting[target][el]['distPath'];
+      run( tmplPath,name,distPath,el )
+      // .then(
+      //   function fulfilled(){
+      //     // `*main()` completed successfully
+      //     console.log("success")
+      //   },
+      //   function rejected(reason){
+      //     // Oops, something went wrong
+      //     console.log("wrong =>" + reason)
+      //   }
+      // );
 
-      readFilePromise(tmplPath).then(function(data){
-        Mustache.parse(data);   // optional, speeds up future uses 
-        var rendered = Mustache.render(data, {class_name: name});
-        mkdirpASync(distPath).then(function(){
-              writePromise(distPath + name + "." + el,rendered);
-            }).catch((err) => {console.log(err.message)})
-      })
     	
       if (setting[target][el]['injectionFile'] != undefined) {
         console.log("found injectionFile setting!");
