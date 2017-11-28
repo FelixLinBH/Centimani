@@ -6,7 +6,41 @@ var Mustache = require('Mustache');
 var key = Object.keys(setting).map(function(el){
 	return el;
 })
+const writePromise = function (path,data){
+  return new Promise(function(resolve, reject) {
+    fs.writeFile(path, data, function (err) {
+          if (err) reject(err);
+          resolve();
+    });
+  });
+}
 
+const mkdirpASync = function (dirPath) {
+  return new Promise(function(resolve, reject) {
+    fsExtra.mkdirs(dirPath, function (err) {
+      if (err) return creject(err)
+      resolve();
+    })
+  }); 
+}
+
+const appendFilePromise = function (path,data){
+  return new Promise(function(resolve, reject) {
+    fs.appendFile(path, data, function (err) {
+          if (err) reject(err);
+          resolve();
+    });
+  });
+}
+
+const readFilePromise = function (path){
+  return new Promise(function(resolve, reject) {
+    fs.readFile(path, 'utf8', function (err,data) {
+          if (err) reject(err);
+          resolve(data);
+    });
+  });
+}
 // console.log(key);
 
 var program = require('commander');
@@ -33,19 +67,15 @@ program
 
     	var tmplPath = setting[target][el]['templates'];
     	var distPath = setting[target][el]['distPath'];
-    	fs.readFile(tmplPath, 'utf8', function (err,data) {
-			  if (err) {
-			    return console.log(err);
-			  }
 
-			  Mustache.parse(data);   // optional, speeds up future uses 
-			  var rendered = Mustache.render(data, {class_name: name});
-        console.log(distPath);
-              mkdirpASync(distPath).then(function(){
+      readFilePromise(tmplPath).then(function(data){
+        Mustache.parse(data);   // optional, speeds up future uses 
+        var rendered = Mustache.render(data, {class_name: name});
+        mkdirpASync(distPath).then(function(){
               writePromise(distPath + name + "." + el,rendered);
             }).catch((err) => {console.log(err.message)})
-
-		  });
+      })
+    	
       if (setting[target][el]['injectionFile'] != undefined) {
         console.log("found injectionFile setting!");
         
@@ -59,30 +89,6 @@ program
 
 program.parse(process.argv);
 
-const writePromise = function (path,data){
-	return new Promise(function(resolve, reject) {
-		fs.writeFile(path, data, function (err) {
-          if (err) reject(err);
-          resolve();
-		});
-	});
-}
 
-const mkdirpASync = function (dirPath) {
-  return new Promise(function(resolve, reject) {
-    fsExtra.mkdirs(dirPath, function (err) {
-      if (err) return creject(err)
-      resolve();
-    })
-  }); 
-}
 
-const appendFilePromise = function (path,data){
-  return new Promise(function(resolve, reject) {
-    fs.appendFile(path, data, function (err) {
-          if (err) reject(err);
-          resolve();
-    });
-  });
-}
 
