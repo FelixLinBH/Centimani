@@ -41,7 +41,16 @@ const readFilePromise = function (path){
     });
   });
 }
-// console.log(key);
+
+const parseDataPromise = function (data,name) {
+  return new Promise(function(resolve, reject) {
+      //preparse
+      Mustache.parse(data); 
+      var rendered = Mustache.render(data, {class_name: name});
+      resolve(rendered);
+  });
+}
+
 
 var program = require('commander');
 program
