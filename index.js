@@ -65,16 +65,30 @@ function* newAction(tmplPath,name,distPath,el) {
 }
 
 function run(tmplPath,name,distPath,el) {
-    var gen = newAction(tmplPath,name,distPath,el);
+    var it = newAction(tmplPath,name,distPath,el);
     
-    function go(result){
-        if(result.done) return;
-        result.value.then(function(r){
-            go(gen.next(r));
-        });
-    }
+    return Promise.resolve()
+      .then( function handleNext(value){
+        var next = it.next( value );
 
-    go(gen.next());
+        return (function handleResult(next){
+          if (next.done) {
+            return next.value;
+          }
+          else {
+            return Promise.resolve( next.value )
+              .then(
+                handleNext,
+                function handleErr(err) {
+                  return Promise.resolve(
+                    it.throw( err )
+                  )
+                  .then( handleResult );
+                }
+              );
+          }
+        })( next );
+      } );
 }
 
 var program = require('commander');
@@ -102,16 +116,14 @@ program
     	var tmplPath = setting[target][el]['templates'];
     	var distPath = setting[target][el]['distPath'];
       run( tmplPath,name,distPath,el )
-      // .then(
-      //   function fulfilled(){
-      //     // `*main()` completed successfully
-      //     console.log("success")
-      //   },
-      //   function rejected(reason){
-      //     // Oops, something went wrong
-      //     console.log("wrong =>" + reason)
-      //   }
-      // );
+      .then(
+        function fulfilled(){
+          console.log("success")
+        },
+        function rejected(reason){
+          console.log("wrong =>" + reason)
+        }
+      );
 
     	
       if (setting[target][el]['injectionFile'] != undefined) {
