@@ -6,7 +6,11 @@
       "injectionFile":[
         {
           "templates":"./templ/controllerTemplInjection.php",
-          "distPath":"./dist/injection/controller.php"
+          "distPath":"./source/controller.php"
+        },
+        {
+          "templates":"./templ/controllerTemplInjection.php",
+          "distPath":"./source/controller2.php"
         }
       ]
     },

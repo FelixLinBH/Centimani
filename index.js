@@ -27,7 +27,7 @@ const mkdirpASync = function (dirPath) {
 
 const appendFilePromise = function (path,data){
   return new Promise(function(resolve, reject) {
-    fs.appendFile(path, data, function (err) {
+    fs.appendFile(path, data + '\n', function (err) {
           if (err) reject(err);
           resolve();
     });
@@ -52,21 +52,46 @@ const parseDataPromise = function (data,name) {
   });
 }
 
-function* newAction(tmplPath,name,distPath,el) {
+
+function* injectionAction(name,ele) {
   try {
-    var val1 = yield readFilePromise(tmplPath);
+    var val1 = yield readFilePromise(ele.templates);
     var val2 = yield parseDataPromise(val1,name);
-    var val3 = yield mkdirpASync(distPath);
-    var val4 = yield writePromise(distPath + name + "." + el,val2);
+    var val3 = yield appendFilePromise(ele.distPath,val2);
+  }catch (err){
+    console.error( err );
+  }
+}
+
+function* newAction(name,type,ele) {
+  try {
+    var val1 = yield readFilePromise(ele['templates']);
+    var val2 = yield parseDataPromise(val1,name);
+    var val3 = yield mkdirpASync(ele['distPath']);
+    var val4 = yield writePromise(ele['distPath'] + name + "." + type,val2);
+    if (ele['injectionFile'] != undefined) {
+      ele['injectionFile'].map(function (item) {
+        run( name,'',item,'injectionFile')
+      })
+    } 
+    
   }
   catch (err) {
     console.error( err );
   }
 }
 
-function run(tmplPath,name,distPath,el) {
-    var it = newAction(tmplPath,name,distPath,el);
-    
+function run(name,type,ele,action) {
+    var it;
+    switch(action){
+      case 'new':
+        it = newAction(name,type,ele);
+        break;
+      case 'injectionFile':
+        it = injectionAction(name,ele);
+        break;
+    }
+
     return Promise.resolve()
       .then( function handleNext(value){
         var next = it.next( value );
@@ -112,10 +137,7 @@ program
   	}
     console.log('Begin creating %s %s ', name,target);
     Object.keys(setting[target]).map(function(el){
-
-    	var tmplPath = setting[target][el]['templates'];
-    	var distPath = setting[target][el]['distPath'];
-      run( tmplPath,name,distPath,el )
+      run( name,el,setting[target][el],'new')
       .then(
         function fulfilled(){
           console.log("success")
@@ -124,13 +146,6 @@ program
           console.log("wrong =>" + reason)
         }
       );
-
-    	
-      if (setting[target][el]['injectionFile'] != undefined) {
-        console.log("found injectionFile setting!");
-        
-      }
-
 
     });
 
