@@ -55,9 +55,13 @@ const parseDataPromise = function (data,name) {
 
 function* injectionAction(name,ele) {
   try {
+    var currentData = yield readFilePromise(ele.distPath);
     var val1 = yield readFilePromise(ele.templates);
     var val2 = yield parseDataPromise(val1,name);
-    var val3 = yield appendFilePromise(ele.distPath,val2);
+    if (currentData.indexOf(val2) == -1) {
+         var val3 = yield appendFilePromise(ele.distPath,val2);
+    }
+   
   }catch (err){
     console.error( err );
   }
