@@ -1,0 +1,34 @@
+{
+    "controller": [
+    {
+        "templates": "./templ/templ.php",
+        "distPath": "./dist/php/",
+        "injectionFile": [
+        {
+            "templates": "./templ/controllerTemplInjection.php",
+            "distPath": "./source/controller.php"
+        },
+        {
+            "templates": "./templ/controllerTemplInjection.php",
+            "distPath": "./source/controller2.php"
+        }],
+        "prefix": "page",
+        "suffix": "php"
+    },
+    {
+        "templates": "./templ/templ.js",
+        "distPath": "./dist/js/",
+        "suffix": "js"
+    },
+    {
+        "templates": "./templ/templ.css",
+        "distPath": "./dist/css/",
+        "suffix": "css"
+    }],
+    "class": [
+    {
+        "templates": "",
+        "path": ""
+    }]
+
+}
