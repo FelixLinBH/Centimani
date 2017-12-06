@@ -1,8 +1,12 @@
 {
   "name": "centimani",
   "version": "1.0.0",
-  "description": "Quickly development cli for website",
+  "description": "Quickly creating development customize tmpelate cli",
   "main": "index.js",
+  "bin":
+  {
+      "ctn": "./bin/centimani"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -14,7 +18,7 @@
     "cli"
   ],
   "author": "Felix.Lin",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/FelixLinBH/Centimani/issues"
   },
