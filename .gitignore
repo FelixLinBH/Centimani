@@ -3,3 +3,5 @@ package-lock.json
 dist/*
 source/*
 templ/*
+setting.json
+exampleSetting.json
