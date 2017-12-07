@@ -97,6 +97,10 @@ Appending to **controller.php** as below
 	Route::get('/', 'test@show');
 
 
+#### Screenshots
+
+![Sample](https://github.com/FelixLinBH/Centimani/blob/master/example.gif?raw=true)
+
 
 ## Authors
 
