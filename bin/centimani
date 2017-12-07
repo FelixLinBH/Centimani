@@ -22,7 +22,7 @@ program
 
 if (process.argv[process.argv.length - 1] != 'init') {
   try {
-   setting= require('.././setting.json')
+    setting  = require(path.join(path.dirname(fs.realpathSync(__filename)), '/setting.json'));
   }
   catch (err) {
 
