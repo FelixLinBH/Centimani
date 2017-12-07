@@ -1,5 +1,3 @@
-//centimani new controller test
-
 var core = require('./lib')
 var setting,key;
 
