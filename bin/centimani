@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-var core = require('./lib')
+var core = require('.././lib')
 var setting,key;
 
 var program = require('commander');
