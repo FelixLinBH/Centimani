@@ -22,7 +22,7 @@ program
 
 if (process.argv[process.argv.length - 1] != 'init') {
   try {
-   setting = JSON.parse(fs.readFileSync('./newSetting.json', 'utf8'));
+   setting = JSON.parse(fs.readFileSync('./setting.json', 'utf8'));
   }
   catch (err) {
 
