@@ -59,19 +59,19 @@ program
   	}
     
     console.log('Begin creating %s %s ', name,target);
-    Object.keys(setting[target]).map(function(el){
-      core.run( 'new',name,setting[target][el])
-      .then(
-        function fulfilled(){
-          console.log("success created %s",name);
-        },
-        function rejected(reason){
-          console.log("wrong =>" + reason)
-        }
-      );
 
+    var job = Object.keys(setting[target]).map(function(el){
+      return core.run( 'new',name,setting[target][el])
     });
 
+    Promise.all(job).then(
+      function fulfilled(){
+        console.log("success created %s",name);
+      },
+      function rejected(reason){
+        console.log("wrong =>" + reason)
+      }
+    );
   
   });
 

@@ -12,13 +12,13 @@
             "templates": "./templ/controllerTemplInjection.php",
             "distPath": "./source/controller2.php"
         }],
-        "prefix": "page",
         "suffix": "php"
     },
     {
         "templates": "./templ/templ.js",
         "distPath": "./dist/js/",
-        "suffix": "js"
+        "suffix": "js",
+        "prefix": "page"
     },
     {
         "templates": "./templ/templ.css",
