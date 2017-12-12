@@ -1,4 +1,5 @@
 var core = require('./lib')
+var fs = require('fs')
 var setting,key;
 
 var program = require('commander');
@@ -7,7 +8,7 @@ program
   .description('init new setting json')
   .action(function (options) {
 
-    core.run('','','','init').then(
+    core.run('init').then(
         function fulfilled(){
           console.log("success created setting.json file.")
           return;
@@ -21,7 +22,7 @@ program
 
 if (process.argv[process.argv.length - 1] != 'init') {
   try {
-   setting= require('./setting.json')
+   setting = JSON.parse(fs.readFileSync('./newSetting.json', 'utf8'));
   }
   catch (err) {
 
@@ -59,10 +60,10 @@ program
     
     console.log('Begin creating %s %s ', name,target);
     Object.keys(setting[target]).map(function(el){
-      core.run( name,el,setting[target][el],'new')
+      core.run( 'new',name,setting[target][el])
       .then(
         function fulfilled(){
-          console.log("success created %s %s",name,target);
+          console.log("success created %s",name);
         },
         function rejected(reason){
           console.log("wrong =>" + reason)
