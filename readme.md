@@ -29,38 +29,40 @@ npm install centimani -g
 
 #### Example Setting.json 
 	{
-	  "controller":{
-	    "php":{
-	      "templates":"./templ/templ.php",
-	      "distPath":"./dist/php/",
-	      "injectionFile":[
+	    "controller": [
+	    {
+	        "templates": "./templ/templ.php",
+	        "distPath": "./dist/php/",
+	        "injectionFile": [
 	        {
-	          "templates":"./templ/controllerTemplInjection.php",
-	          "distPath":"./source/controller.php"
+	            "templates": "./templ/controllerTemplInjection.php",
+	            "distPath": "./source/controller.php"
 	        },
 	        {
-	          "templates":"./templ/controllerTemplInjection.php",
-	          "distPath":"./source/controller2.php"
-	        }
-	      ]
+	            "templates": "./templ/controllerTemplInjection.php",
+	            "distPath": "./source/controller2.php"
+	        }],
+	        "suffix": "php"
 	    },
-	    "js":{
-	      "templates":"./templ/templ.js",
-	      "distPath":"./dist/js/"
+	    {
+	        "templates": "./templ/templ.js",
+	        "distPath": "./dist/js/",
+	        "suffix": "js",
+	        "prefix": "page"
 	    },
-	    "css":{
-	      "templates":"./templ/templ.css",
-	      "distPath":"./dist/css/"
-	    }
-	  },
-	  "class":{
-	    "php":{
-	      "templates":"./templ/templ2.php",
-	      "distPath":"./dist/php/",
-	    }
-	  }
-	}
+	    {
+	        "templates": "./templ/templ.css",
+	        "distPath": "./dist/css/",
+	        "suffix": "css"
+	    }],
+	    "class": [
+	    {
+	        "templates":"./templ/templ2.php",
+	        "distPath":"./dist/php/",
+	    }]
 
+	}
+	
 There is two instruction help you creating base code with customize template.
 
 	$ centimani new controller test

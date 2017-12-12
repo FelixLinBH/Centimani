@@ -27,8 +27,8 @@
     }],
     "class": [
     {
-        "templates": "",
-        "path": ""
+        "templates":"./templ/templ2.php",
+        "distPath":"./dist/php/",
     }]
 
 }

@@ -1,6 +1,6 @@
 {
   "name": "centimani",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Quickly creating development customize tmpelate cli",
   "main": "index.js",
   "bin":
