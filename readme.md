@@ -14,10 +14,8 @@ npm install centimani -g
 
 ## Features
 
-- [x] Customize template what you want.  
-- [x] Add cli instruction from setting json.
-- [ ] Providind initialize setting cli. 
-- [ ] Scan folder structure compare to setting.
+- Customize template what you want.  
+- Provide cli instruction from setting json.
 
 ## Introduction
 
